@@ -1,4 +1,4 @@
-# Hi, I'm Ali 👋
+# Hi, I'm Ali
 
 - 🎓 **Currently studying:** Higher Vocational Degree in Network & Systems Administration (ASIR / EQF Level 5).
 - 🎯 **Focus:** Linux Systems, Cloud Infrastructure (AWS/Azure), Automation (Bash/Python), and Network Architecture.
