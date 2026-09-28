@@ -9,6 +9,6 @@
 ---
 
 ## 🚀 Featured HomeLab & Projects
-- ⚙️ **[homelab-network-labs](https://github.com/tu-usuario/homelab-network-labs):** Raspberry Pi kiosk automation, network topologies & hardware configurations.
-- 📜 **[asir-scripts-automation](https://github.com/tu-usuario/asir-scripts-automation):** Bash & Python automation scripts for Linux administration.
-- 🔧 **[dotfiles](https://github.com/tu-usuario/dotfiles):** Custom Linux environment and terminal configuration files.
+- ⚙️ **[homelab-network-labs](https://github.com/alibarii/homelab-network-labs):** Raspberry Pi kiosk automation, network topologies & hardware configurations.
+- 📜 **[asir-scripts-automation](https://github.com/alibarii/asir-scripts-automation):** Bash & Python automation scripts for Linux administration.
+- 🔧 **[dotfiles](https://github.com/alibarii/dotfiles):** Custom Linux environment and terminal configuration files.
