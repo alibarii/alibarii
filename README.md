@@ -1,16 +1,14 @@
-## Hi there 👋
+# Hi, I'm Ali 👋
 
-<!--
-**alibarii/alibarii** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+- 🎓 **Currently studying:** Higher Vocational Degree in Network & Systems Administration (ASIR / EQF Level 5).
+- 🎯 **Focus:** Linux Systems, Cloud Infrastructure (AWS/Azure), Automation (Bash/Python), and Network Architecture.
+- 🛠️ **Current Tech Stack:** Ubuntu Server, Debian, Cisco Packet Tracer, Raspberry Pi, Bash, Git.
+- 💬 **Languages:** Spanish (Native) | English (Professional / C1).
+- 📬 **Contact:** linkedin.com/in/tu-perfil | ali11julio@gmail.com
 
-Here are some ideas to get you started:
+---
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## 🚀 Featured HomeLab & Projects
+- ⚙️ **[homelab-network-labs](./homelab-network-labs):** Raspberry Pi kiosk automation, network topologies & hardware configurations.
+- 📜 **[asir-scripts-automation](./asir-scripts-automation):** Bash & Python automation scripts for Linux administration.
+- 🔧 **[dotfiles](./dotfiles):** Custom Linux environment and terminal configuration files.
