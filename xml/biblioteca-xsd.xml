@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  biblioteca-xsd.xml · el MISMO documento, pero con NAMESPACE y validado
+  por XML Schema en lugar de por DTD.
+  ===========================================================================
+  ESPACIOS DE NOMBRES (namespaces): sirven para que dos vocabularios XML
+  distintos puedan convivir en un mismo fichero sin que choquen sus nombres
+  (mi <titulo> de libro frente al <titulo> de otro esquema).
+
+    xmlns="https://alibarii.github.io/biblioteca"
+        -> namespace POR DEFECTO: todos los elementos sin prefijo pertenecen a él.
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        -> namespace estándar de instancia, da el atributo schemaLocation.
+    xsi:schemaLocation="URI_del_namespace  fichero.xsd"
+        -> pares (namespace, dónde está su esquema).
+
+  OJO: la URI de un namespace es sólo un IDENTIFICADOR ÚNICO, no hace falta
+  que exista esa página web.
+
+  Validar:  xmllint (opciones: noout + schema). El comando completo está en el resumen .md
+  ===========================================================================
+-->
+<biblioteca xmlns="https://alibarii.github.io/biblioteca"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="https://alibarii.github.io/biblioteca biblioteca.xsd"
+            nombre="IES Ejemplo"
+            version="2.0">
+
+  <libros>
+    <libro id="L001" isbn="978-84-376-0494-7" disponible="true">
+      <titulo idioma="es">Cien años de soledad</titulo>
+      <autor>
+        <nombre>Gabriel</nombre>
+        <apellidos>García Márquez</apellidos>
+        <nacionalidad>Colombiana</nacionalidad>
+      </autor>
+      <editorial>Cátedra</editorial>
+      <anio>1967</anio>
+      <precio moneda="EUR">19.95</precio>
+      <generos>
+        <genero>Realismo mágico</genero>
+        <genero>Novela</genero>
+      </generos>
+      <resumen>Saga de los Buendía en Macondo.</resumen>
+    </libro>
+
+    <libro id="L003" isbn="978-01-345-9123-0" disponible="true">
+      <titulo idioma="en">The Pragmatic Programmer</titulo>
+      <autor>
+        <nombre>Andrew</nombre>
+        <apellidos>Hunt</apellidos>
+      </autor>
+      <editorial>Addison-Wesley</editorial>
+      <anio>1999</anio>
+      <precio moneda="USD">45.00</precio>
+      <generos>
+        <genero>Informática</genero>
+      </generos>
+    </libro>
+  </libros>
+
+  <socios>
+    <socio id="S001" alta="2024-09-15" libro_prestado="L001">
+      <nombre>Ali</nombre>
+      <email>ali@example.com</email>
+    </socio>
+  </socios>
+
+  <pie>Catálogo de ejemplo</pie>
+</biblioteca>

@@ -1,0 +1,57 @@
+<!--
+  biblioteca.dtd · GRAMÁTICA del documento en formato DTD
+  ===========================================================================
+  El DTD define QUÉ elementos y atributos son legales, en qué orden y cuántas
+  veces. Un XML que cumple su DTD/XSD se llama XML VÁLIDO (que es más que
+  "bien formado": bien formado = sintaxis correcta; válido = además respeta
+  la gramática).
+
+  Cardinalidades:   (nada) = exactamente 1   ? = 0 ó 1   * = 0 ó más   + = 1 ó más
+  Separadores:      ,  = secuencia (en ese orden)        | = alternativa (uno u otro)
+  Contenido:        #PCDATA = texto         EMPTY = vacío        ANY = cualquiera
+  Atributos:        CDATA = texto    ID = identificador único    IDREF = referencia a un ID
+                    (a|b) = lista cerrada de valores
+                    #REQUIRED = obligatorio   #IMPLIED = opcional   "valor" = por defecto
+-->
+
+<!ELEMENT biblioteca (libros, socios, pie?)>
+<!ATTLIST biblioteca
+          nombre  CDATA #REQUIRED
+          version CDATA #IMPLIED>
+
+<!ELEMENT libros (libro+)>
+
+<!ELEMENT libro (titulo, autor, editorial, anio, precio, generos, resumen)>
+<!ATTLIST libro
+          id          ID            #REQUIRED
+          isbn        CDATA         #REQUIRED
+          disponible  (true|false)  "true">
+
+<!ELEMENT titulo (#PCDATA)>
+<!ATTLIST titulo idioma CDATA #IMPLIED>
+
+<!ELEMENT autor (nombre, apellidos, nacionalidad?)>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT apellidos (#PCDATA)>
+<!ELEMENT nacionalidad (#PCDATA)>
+
+<!ELEMENT editorial (#PCDATA)>
+<!ELEMENT anio (#PCDATA)>
+
+<!ELEMENT precio (#PCDATA)>
+<!ATTLIST precio moneda (EUR|USD) "EUR">
+
+<!ELEMENT generos (genero+)>
+<!ELEMENT genero (#PCDATA)>
+
+<!ELEMENT resumen (#PCDATA)>
+
+<!ELEMENT socios (socio*)>
+<!ELEMENT socio (nombre, email)>
+<!ATTLIST socio
+          id              ID    #REQUIRED
+          alta            CDATA #IMPLIED
+          libro_prestado  IDREF #IMPLIED>
+<!ELEMENT email (#PCDATA)>
+
+<!ELEMENT pie (#PCDATA)>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ============================================================================
+  EJEMPLO DIDÁCTICO DE XML  ·  biblioteca.xml
+  ============================================================================
+  Este fichero está pensado para LEERSE DE ARRIBA A ABAJO: cada parte de la
+  sintaxis de XML aparece comentada justo donde se usa.
+
+  Las 3 piezas de la línea 1 (el "prólogo" o declaración XML):
+    version="1.0"      -> versión de la especificación (siempre 1.0 en la práctica)
+    encoding="UTF-8"   -> juego de caracteres del fichero (acentos, ñ, €...)
+    standalone="no"    -> declara que el documento depende de un DTD externo
+
+  REGLAS DE ORO (si se incumple una, el documento NO está "bien formado"
+  y el parser se niega a leerlo: XML no perdona como HTML):
+    1. Un único elemento raíz.
+    2. Toda etiqueta se cierra: <a>...</a> o, si está vacía, <a/>.
+    3. Las etiquetas se anidan, nunca se cruzan: <a><b></b></a>  (NO <a><b></a></b>)
+    4. XML distingue mayúsculas de minúsculas: <Libro> != <libro>
+    5. Los valores de atributo SIEMPRE entre comillas: id="L001"
+    6. Los caracteres < & deben escaparse (&lt; &amp;) o ir dentro de CDATA.
+  ============================================================================
+-->
+
+<!--
+  DOCTYPE: asocia el documento a una gramática DTD externa (biblioteca.dtd)
+  y además define, en el "subconjunto interno" [ ... ], entidades propias.
+  Una ENTIDAD es como una constante de texto: se declara una vez y se usa
+  con &nombre; tantas veces como quieras.
+-->
+<!DOCTYPE biblioteca SYSTEM "biblioteca.dtd" [
+  <!ENTITY centro "IES Ejemplo · Departamento de Informática">
+  <!ENTITY copyright "&#169; 2026">
+]>
+
+<!--
+  Esto es una INSTRUCCIÓN DE PROCESO (PI): no es contenido del documento,
+  es un mensaje para la aplicación que lo procese. La más típica asocia
+  una hoja de estilo XSLT para transformar el XML a HTML en el navegador.
+-->
+<?xml-stylesheet type="text/xsl" href="biblioteca.xsl"?>
+
+<!-- ELEMENTO RAÍZ: sólo puede haber uno y lo contiene absolutamente todo. -->
+<biblioteca nombre="&centro;" version="2.0">
+
+  <!--
+    ELEMENTO vs ATRIBUTO (la duda clásica):
+      - ELEMENTO: el dato en sí, lo que es contenido, lo que puede repetirse
+        o crecer en el futuro  ->  <titulo>, <autor>
+      - ATRIBUTO: metadato corto que identifica o califica al elemento, no se
+        repite y no tiene estructura interna  ->  id="L001", idioma="es"
+    Regla práctica: si dudas, hazlo ELEMENTO (los elementos escalan, los
+    atributos no: un atributo no puede repetirse ni contener hijos).
+  -->
+  <libros>
+
+    <libro id="L001" isbn="978-84-376-0494-7" disponible="true">
+      <titulo idioma="es">Cien años de soledad</titulo>
+      <!-- Elemento con hijos: la estructura es un ÁRBOL, no una tabla. -->
+      <autor>
+        <nombre>Gabriel</nombre>
+        <apellidos>García Márquez</apellidos>
+        <nacionalidad>Colombiana</nacionalidad>
+      </autor>
+      <editorial>Cátedra</editorial>
+      <anio>1967</anio>
+      <!-- El punto decimal y el atributo de moneda: XML no tiene "tipos"
+           por sí mismo; los tipos los pone el XSD (ver biblioteca.xsd). -->
+      <precio moneda="EUR">19.95</precio>
+      <generos>
+        <genero>Realismo mágico</genero>
+        <genero>Novela</genero>
+      </generos>
+      <!--
+        SECCIÓN CDATA: todo lo que va dentro se trata como TEXTO PLANO.
+        Es la vía de escape para meter código, HTML o símbolos < y &
+        sin tener que escaparlos uno a uno.
+      -->
+      <resumen><![CDATA[
+        Saga de los Buendía en Macondo. Nota del bibliotecario:
+        if (stock > 0 && reservas < 5) { prestar(); }
+        <p>Este HTML NO se interpreta: es texto.</p>
+      ]]></resumen>
+    </libro>
+
+    <libro id="L002" isbn="978-84-204-8305-1" disponible="false">
+      <titulo idioma="es">La sombra del viento</titulo>
+      <autor>
+        <nombre>Carlos</nombre>
+        <apellidos>Ruiz Zafón</apellidos>
+        <nacionalidad>Española</nacionalidad>
+      </autor>
+      <editorial>Planeta</editorial>
+      <anio>2001</anio>
+      <precio moneda="EUR">22.50</precio>
+      <generos>
+        <genero>Misterio</genero>
+      </generos>
+      <!--
+        ENTIDADES PREDEFINIDAS (las 5 que XML trae de serie):
+          &lt;   <      &gt;   >      &amp;  &
+          &quot; "      &apos; '
+        Aquí se usan para escribir símbolos que de otro modo romperían el XML.
+      -->
+      <resumen>Barcelona, el Cementerio de los Libros Olvidados &amp; una novela
+      maldita. Valorada &lt; 5 estrellas por muy pocos lectores.</resumen>
+    </libro>
+
+    <libro id="L003" isbn="978-01-345-9123-0" disponible="true">
+      <titulo idioma="en">The Pragmatic Programmer</titulo>
+      <autor>
+        <nombre>Andrew</nombre>
+        <apellidos>Hunt</apellidos>
+        <nacionalidad>Estadounidense</nacionalidad>
+      </autor>
+      <editorial>Addison-Wesley</editorial>
+      <anio>1999</anio>
+      <precio moneda="USD">45.00</precio>
+      <generos>
+        <genero>Informática</genero>
+      </generos>
+      <!-- ELEMENTO VACÍO: no tiene contenido, sólo atributos.
+           <resumen/> equivale exactamente a <resumen></resumen> -->
+      <resumen/>
+    </libro>
+
+  </libros>
+
+  <socios>
+    <!--
+      IDREF: el atributo libro_prestado de <socio> apunta al id de un <libro>.
+      El DTD (tipos ID / IDREF) obliga a que ese id exista realmente en el
+      documento: es la forma que tiene XML de hacer "claves foráneas".
+    -->
+    <socio id="S001" alta="2024-09-15" libro_prestado="L002">
+      <nombre>Ali</nombre>
+      <email>ali@example.com</email>
+    </socio>
+    <socio id="S002" alta="2025-01-10">
+      <nombre>Marta</nombre>
+      <email>marta@example.com</email>
+    </socio>
+  </socios>
+
+  <!-- La entidad &copyright; se expande al texto declarado en el DOCTYPE. -->
+  <pie>Catálogo de &centro; &copyright;</pie>
+
+</biblioteca>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  biblioteca.xsd · GRAMÁTICA en formato XML SCHEMA (XSD)
+  ===========================================================================
+  El XSD hace lo mismo que el DTD pero mucho mejor:
+    · Está escrito en XML (el DTD tiene su propia sintaxis aparte).
+    · Tiene TIPOS DE DATO: enteros, decimales, fechas, booleanos...
+    · Soporta ESPACIOS DE NOMBRES (namespaces).
+    · Permite restricciones: rangos, patrones (regex), listas de valores.
+  Por eso en el mundo real se usa XSD y el DTD queda para documentos
+  antiguos o muy simples.
+  Se valida con:  xmllint (opciones: noout + schema). El comando completo está en el resumen .md
+  ===========================================================================
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:bib="https://alibarii.github.io/biblioteca"
+           targetNamespace="https://alibarii.github.io/biblioteca"
+           elementFormDefault="qualified">
+
+  <!-- TIPOS SIMPLES PROPIOS: un tipo base + restricciones encima. -->
+
+  <xs:simpleType name="tipoISBN">
+    <xs:restriction base="xs:string">
+      <!-- patrón = expresión regular: 978-dd-ddd-dddd-d -->
+      <xs:pattern value="97[89]-\d{2}-\d{3}-\d{4}-\d"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoAnio">
+    <xs:restriction base="xs:gYear">
+      <xs:minInclusive value="1450"/>
+      <xs:maxInclusive value="2100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoMoneda">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EUR"/>
+      <xs:enumeration value="USD"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- TIPO COMPLEJO con contenido simple: texto + atributo. -->
+  <xs:complexType name="tipoPrecio">
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="moneda" type="bib:tipoMoneda" default="EUR"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- TIPO COMPLEJO con hijos en secuencia. -->
+  <xs:complexType name="tipoAutor">
+    <xs:sequence>
+      <xs:element name="nombre"       type="xs:string"/>
+      <xs:element name="apellidos"    type="xs:string"/>
+      <xs:element name="nacionalidad" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tipoLibro">
+    <xs:sequence>
+      <xs:element name="titulo">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="idioma" type="xs:language" use="required"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="autor"     type="bib:tipoAutor"/>
+      <xs:element name="editorial" type="xs:string"/>
+      <xs:element name="anio"      type="bib:tipoAnio"/>
+      <xs:element name="precio"    type="bib:tipoPrecio"/>
+      <xs:element name="generos">
+        <xs:complexType>
+          <xs:sequence>
+            <!-- maxOccurs="unbounded" = el + del DTD, pero con control fino -->
+            <xs:element name="genero" type="xs:string"
+                        minOccurs="1" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="resumen" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id"         type="xs:ID"        use="required"/>
+    <xs:attribute name="isbn"       type="bib:tipoISBN" use="required"/>
+    <xs:attribute name="disponible" type="xs:boolean"   default="true"/>
+  </xs:complexType>
+
+  <xs:complexType name="tipoSocio">
+    <xs:sequence>
+      <xs:element name="nombre" type="xs:string"/>
+      <!-- Tipo con patrón de email, otra ventaja frente al DTD -->
+      <xs:element name="email">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id"             type="xs:ID"    use="required"/>
+    <xs:attribute name="alta"           type="xs:date"  use="optional"/>
+    <xs:attribute name="libro_prestado" type="xs:IDREF" use="optional"/>
+  </xs:complexType>
+
+  <!-- ELEMENTO RAÍZ: el único declarado a nivel global. -->
+  <xs:element name="biblioteca">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="libros">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="libro" type="bib:tipoLibro" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="socios">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="socio" type="bib:tipoSocio"
+                          minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="pie" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="nombre"  type="xs:string" use="required"/>
+      <xs:attribute name="version" type="xs:decimal"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
